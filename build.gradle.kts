@@ -11,9 +11,7 @@ repositories {
     mavenCentral()
 }
 
-
 dependencies {
-    //testImplementation("org.testng:testng:7.11.0")
     testImplementation("org.testng:testng:7.10.2")
     implementation("org.seleniumhq.selenium:selenium-java:4.35.0")
     implementation("io.github.bonigarcia:webdrivermanager:6.3.2")
@@ -23,7 +21,9 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.4.1")
     implementation("org.apache.logging.log4j:log4j-core:2.25.1")
     implementation("org.apache.logging.log4j:log4j-api:2.25.1")
+    implementation("commons-io:commons-io:2.15.1")
 }
+
 
 tasks.test {
     useTestNG {
@@ -37,5 +37,12 @@ tasks.test {
         if (project.hasProperty("env")) {
             systemProperty("env", project.property("env") as String)
         }
+    }
+    testLogging {
+        events("passed", "skipped", "failed", "standardOut", "standardError")
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
 }
