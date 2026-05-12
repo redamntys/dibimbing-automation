@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 public class LoginTests extends BaseTests {
     private static final Logger logger = LogManager.getLogger(LoginTests.class);
-    @Test(priority = 3, groups = {"smoke"}, description = "Test successful login", retryAnalyzer = core.RetryAnalyzer.class)
+    @Test(priority = 3, groups = {"login"}, description = "Test successful login", retryAnalyzer = core.RetryAnalyzer.class)
 
     public void testLogin() {
         logger.info("Memulai test login dengan credential standard user");

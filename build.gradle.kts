@@ -17,10 +17,11 @@ dependencies {
     implementation("io.github.bonigarcia:webdrivermanager:6.3.2")
     testImplementation("org.assertj:assertj-core:3.27.3")
     implementation("org.apache.poi:poi:5.4.1")
-    implementation("com.aventstack:extentreports:5.1.2")
     implementation("org.apache.poi:poi-ooxml:5.4.1")
-    implementation("org.apache.logging.log4j:log4j-core:2.25.1")
+    implementation("com.aventstack:extentreports:5.1.2")
     implementation("org.apache.logging.log4j:log4j-api:2.25.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.25.1")
+    implementation("org.apache.logging.log4j:log4j-slf4j2-impl:2.25.1")
     implementation("commons-io:commons-io:2.15.1")
 }
 

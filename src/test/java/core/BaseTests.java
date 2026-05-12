@@ -8,7 +8,6 @@ import org.testng.annotations.Parameters;
 import java.util.Properties;
 
 public class BaseTests {
-
     protected static Properties config;
 
     @BeforeSuite(alwaysRun = true)

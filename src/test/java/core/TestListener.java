@@ -23,9 +23,7 @@ import java.util.Date;
 
 
 public class TestListener implements ITestListener {
-
-
-    private static final Logger log = LogManager.getLogger(TestListener.class);
+    private static final Logger logger = LogManager.getLogger(TestListener.class);
     private static ExtentReports extent;
     private static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
     private static final String REPORT_DIR = System.getProperty("user.dir") + "/reports/";
@@ -33,7 +31,7 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onStart(ITestContext context) {
-        log.info("========== Test Suite Started: {} ==========", context.getName());
+        logger.info("========== Test Suite Started: {} ==========", context.getName());
 
         String timestamp = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
         String reportPath = REPORT_DIR + "extent-report_" + timestamp + ".html";
@@ -54,7 +52,7 @@ public class TestListener implements ITestListener {
 
         new File(SCREENSHOT_DIR).mkdirs();
 
-        log.info("ExtentReports initialized. Report will be saved to: {}", reportPath);
+        logger.info("ExtentReports initialized. Report will be saved to: {}", reportPath);
     }
 
 
@@ -62,7 +60,7 @@ public class TestListener implements ITestListener {
     public void onTestStart(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         String testDescription = result.getMethod().getDescription();
-        log.info("---------- Test Started: {} ----------", testName);
+        logger.info("---------- Test Started: {} ----------", testName);
         ExtentTest test = extent.createTest(testName, testDescription);
         test.assignCategory(result.getMethod().getGroups());
         extentTest.set(test);
@@ -74,7 +72,7 @@ public class TestListener implements ITestListener {
     public void onTestSuccess(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         long duration = result.getEndMillis() - result.getStartMillis();
-        log.info("Test PASSED: {} (Duration: {}ms)", testName, duration);
+        logger.info("Test PASSED: {} (Duration: {}ms)", testName, duration);
         extentTest.get().log(Status.PASS, "Test executed successfully");
         extentTest.get().log(Status.INFO, "Execution time: " + duration + "ms");
     }
@@ -84,16 +82,16 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         Throwable throwable = result.getThrowable();
-        log.error("Test FAILED: {}", testName);
-        log.error("Failure reason: {}", throwable != null ? throwable.getMessage() : "Unknown");
+        logger.error("Test FAILED: {}", testName);
+        logger.error("Failure reason: {}", throwable != null ? throwable.getMessage() : "Unknown");
         extentTest.get().log(Status.FAIL, "Test failed: " + (throwable != null ? throwable.getMessage() : "Unknown error"));
         String screenshotPath = captureScreenshot(testName);
         if (screenshotPath != null) {
             try {
                 extentTest.get().addScreenCaptureFromPath(screenshotPath, "Screenshot on failure");
-                log.info("Screenshot captured: {}", screenshotPath);
+                logger.info("Screenshot captured: {}", screenshotPath);
             } catch (Exception e) {
-                log.error("Failed to attach screenshot to report: {}", e.getMessage());
+                logger.error("Failed to attach screenshot to report: {}", e.getMessage());
             }
         }
 
@@ -106,9 +104,9 @@ public class TestListener implements ITestListener {
     public void onTestSkipped(ITestResult result) {
         String testName = result.getMethod().getMethodName();
         Throwable throwable = result.getThrowable();
-        log.warn("Test SKIPPED: {}", testName);
-        ExtentTest test = extent.createTest(testName, result.getMethod().getDescription());
-        extentTest.set(test);
+        logger.warn("Test SKIPPED: {}", testName);
+        //ExtentTest test = extent.createTest(testName, result.getMethod().getDescription());
+        //extentTest.set(test);
         extentTest.get().log(Status.SKIP, "Test skipped");
         if (throwable != null) {
             extentTest.get().log(Status.SKIP, "Skip reason: " + throwable.getMessage());
@@ -117,8 +115,8 @@ public class TestListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        log.info("========== Test Suite Finished: {} ==========", context.getName());
-        log.info("Total tests: {}, Passed: {}, Failed: {}, Skipped: {}",
+        logger.info("========== Test Suite Finished: {} ==========", context.getName());
+        logger.info("Total tests: {}, Passed: {}, Failed: {}, Skipped: {}",
                 context.getAllTestMethods().length,
                 context.getPassedTests().size(),
                 context.getFailedTests().size(),
@@ -126,14 +124,14 @@ public class TestListener implements ITestListener {
 
         if (extent != null) {
             extent.flush();
-            log.info("ExtentReports flushed successfully");
+            logger.info("ExtentReports flushed successfully");
         }
     }
 
     private String captureScreenshot(String testName) {
         WebDriver driver = DriverManager.getDriver();
         if (driver == null) {
-            log.warn("WebDriver is null, cannot capture screenshot");
+            logger.warn("WebDriver is null, cannot capture screenshot");
             return null;
         }
 
@@ -145,10 +143,10 @@ public class TestListener implements ITestListener {
             File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             File destFile = new File(filePath);
             FileUtils.copyFile(srcFile, destFile);
-            log.info("Screenshot saved: {}", filePath);
+            logger.info("Screenshot saved: {}", filePath);
             return relativePath;
         } catch (IOException e) {
-            log.error("Failed to capture screenshot: {}", e.getMessage());
+            logger.error("Failed to capture screenshot: {}", e.getMessage());
             return null;
         }
     }
