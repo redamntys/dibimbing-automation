@@ -4,9 +4,14 @@ import core.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 public class LoginPage extends BasePage {
+    private static final Logger logger = LogManager.getLogger(LoginPage.class);
 
     @FindBy(id = "user-name")
     private WebElement usernameInput;
@@ -25,13 +30,17 @@ public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver) {
         super(driver);
+        PageFactory.initElements(driver, this);
     }
 
     public void login(String username, String password) {
         waitForElementToBeVisible(usernameInput);
+        logger.info("Login started");
         usernameInput.sendKeys(username);
         passwordInput.sendKeys(password);
         loginButton.click();
+        wait.until(ExpectedConditions.urlContains("inventory"));
+        logger.info("Login successful");
     }
 
     public boolean isUserLoggedInSuccessfully() {
@@ -39,7 +48,9 @@ public class LoginPage extends BasePage {
             waitForElementToBeVisible(pageTitle);
             return pageTitle.isDisplayed() && pageTitle.getText().equals("Products");
         } catch (Exception e) {
+            logger.error("LoginPage-isUserLoggedInSuccessfully(): Got exception: ", e);
             return false;
+
         }
     }
     public boolean isErrorMessageDisplayed() {
@@ -47,6 +58,7 @@ public class LoginPage extends BasePage {
             waitForElementToBeVisible(errorAlert);
             return errorAlert.isDisplayed();
         } catch (Exception e) {
+            logger.error("LoginPage-isErrorMessageDisplayed(): Got exception: ", e);
             return false;
         }
     }
@@ -63,8 +75,6 @@ public class LoginPage extends BasePage {
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
     }
-
-
 }
 
 

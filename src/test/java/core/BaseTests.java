@@ -8,7 +8,6 @@ import org.testng.annotations.Parameters;
 import java.util.Properties;
 
 public class BaseTests {
-
     protected static Properties config;
 
     @BeforeSuite(alwaysRun = true)
@@ -23,7 +22,7 @@ public class BaseTests {
     public void setUp(@Optional("chrome") String browser) {
         DriverManager.initDriver(browser);
         DriverManager.getDriver().manage().window().maximize();
-        DriverManager.getDriver().get(config.getProperty("bookstoreUrl"));
+        DriverManager.getDriver().get(config.getProperty("baseUrl"));
     }
 
     @AfterMethod(alwaysRun = true)

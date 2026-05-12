@@ -5,15 +5,16 @@
         <listener class-name="core.RetryListener"/>
     </listeners>
     <parameter name="browser" value="chrome"/>
-    <test name="LoginTests">
+    <test name="SaucedemoTests">
         <groups>
             <run>
-                <include name="smoke"/>
-                <exclude name="p2"/>
+                <include name="authentication"/>
+                <include name="products"/>
+                <exclude name="login"/>
             </run>
         </groups>
         <classes>
-            <class name="bookstore.LoginTests"/>
+            <class name="saucedemo.ProductsTests"/>
         </classes>
     </test>
 </suite>
