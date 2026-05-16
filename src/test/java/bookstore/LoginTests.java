@@ -17,6 +17,7 @@ public class LoginTests extends BaseTests {
     public void testLoginSuccess() {
         logger.info("Memulai test login dengan credential success user");
         bookstore.LoginPage loginPage = new LoginPage(DriverManager.getDriver());
+        loginPage.openLoginPage(config.getProperty("bookstoreUrl"));
 
         logger.info("User login menggunakan credential success user");
         loginPage.login(config.getProperty("successUser"), config.getProperty("passwordUser"));
@@ -30,6 +31,7 @@ public class LoginTests extends BaseTests {
     public void testLoginFailed() {
         logger.info("Memulai test login dengan credential success user");
         bookstore.LoginPage loginPage = new LoginPage(DriverManager.getDriver());
+        loginPage.openLoginPage(config.getProperty("bookstoreUrl"));
 
         logger.info("User login menggunakan credential failed user");
         loginPage.login(config.getProperty("failedUser2"), config.getProperty("passwordUser"));

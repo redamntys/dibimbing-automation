@@ -19,6 +19,7 @@ public class BaseLoginTests extends BaseTests {
 
         logger.info("[BaseLoginTests] Login using username: {} and password: {}", username, password);
         LoginPage loginPage = new LoginPage(DriverManager.getDriver());
+        loginPage.openLoginPage(config.getProperty("baseUrl"));
         loginPage.login(username, password);
     }
 }
