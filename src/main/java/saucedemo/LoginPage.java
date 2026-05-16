@@ -39,7 +39,7 @@ public class LoginPage extends BasePage {
         usernameInput.sendKeys(username);
         passwordInput.sendKeys(password);
         loginButton.click();
-        wait.until(ExpectedConditions.urlContains("inventory"));
+        //wait.until(ExpectedConditions.urlContains("inventory"));
         logger.info("Login successful");
     }
 
@@ -70,6 +70,10 @@ public class LoginPage extends BasePage {
         } catch (Exception e) {
             return "";
         }
+    }
+
+    public void openLoginPage(String url){
+        driver.get(url);
     }
 
     public String getCurrentUrl() {

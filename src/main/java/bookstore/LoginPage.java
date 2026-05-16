@@ -48,6 +48,9 @@ public class LoginPage extends BasePage {
         scrollToElement(errorMessage);
         return errorMessage.isDisplayed();
     }
+    public void openLoginPage(String url){
+        driver.get(url);
+    }
 
 }
 

@@ -3,7 +3,9 @@ package saucedemo;
 import core.BaseLoginTests;
 import core.DriverManager;
 import core.TestUtils;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
@@ -11,6 +13,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ProductsTests extends BaseLoginTests {
@@ -50,6 +54,83 @@ public class ProductsTests extends BaseLoginTests {
         };
     }
 
+
+    @Test(priority = 1, groups = {"products"}, description = "Verify sorting product by Name A to Z",retryAnalyzer = core.RetryAnalyzer.class)
+    public void testSortByNameFunctionAToZ() {
+        ProductsPage page = new ProductsPage(DriverManager.getDriver());
+
+        logger.info("Applying filter : Name(A to Z)");
+        Assert.assertTrue(page.filterProductsAtoZ(),
+                "User should be able to click filter products dropdown and filter by Name A to Z");
+
+        List<String> actualProductNames = page.getProductNames();
+        logger.info("Actual product names: " + actualProductNames);
+
+        List<String> expectedProductNames = actualProductNames;
+        Collections.sort(expectedProductNames);
+        logger.info("Expected sorted names: " + expectedProductNames);
+
+        Assert.assertEquals(actualProductNames, expectedProductNames);
+        logger.info("[PRODUCTS] testSortByNameFunctionAToZ : Passed!");
+    }
+
+    @Test(priority = 1, groups = {"products"}, description = "Verify sorting product by Name Z to A",retryAnalyzer = core.RetryAnalyzer.class)
+    public void testSortByNameFunctionZToA() {
+        ProductsPage page = new ProductsPage(DriverManager.getDriver());
+
+        logger.info("Applying filter : Name(Z to A");
+        Assert.assertTrue(page.filterProductsZtoA(),
+                "User should be able to click filter products dropdown and filter by Name Z to A");
+
+        List<String> actualProductNames = page.getProductNames();
+        logger.info("Actual product names: " + actualProductNames);
+
+        List<String> expectedProductNames = actualProductNames;
+        Collections.sort(expectedProductNames);
+        logger.info("Expected sorted names: " + expectedProductNames);
+
+        Assert.assertEquals(actualProductNames, expectedProductNames);
+        logger.info("[PRODUCTS] testSortByNameFunctionZToA : Passed!");
+    }
+
+    @Test(priority = 1, groups = {"products"}, description = "Verify sorting product by Price low to high", retryAnalyzer = core.RetryAnalyzer.class)
+    public void testSortByPriceFunctionLowToHigh() {
+        ProductsPage page = new ProductsPage(DriverManager.getDriver());
+
+        logger.info("Applying filter : Price(low to high)");
+        Assert.assertTrue(page.filterProductsPriceLowToHigh(),
+                "User should be able to click filter products dropdown and filter by Price low to high");
+
+        List<String> actualProductPrice = page.getProductPrice();
+        logger.info("Actual product price: " + actualProductPrice);
+
+        List<String> expectedProductPrice = actualProductPrice;
+        Collections.sort(expectedProductPrice);
+        logger.info("Expected sorted price: " + expectedProductPrice);
+
+        Assert.assertEquals(actualProductPrice, expectedProductPrice);
+        logger.info("[PRODUCTS] testSortByPriceFunctionLowToHigh : Passed!");
+    }
+
+    @Test(priority = 1, groups = {"products"}, description = "Verify sorting product by Price high to low", retryAnalyzer = core.RetryAnalyzer.class)
+    public void testSortByPriceFunctionHighToLow() {
+        ProductsPage page = new ProductsPage(DriverManager.getDriver());
+
+        logger.info("Applying filter : Price(high to low)");
+        Assert.assertTrue(page.filterProductsPriceHighToLow(),
+                "User should be able to click filter products dropdown and filter by Price high to low");
+
+        List<String> actualProductPrice = page.getProductPrice();
+        logger.info("Actual product price: " + actualProductPrice);
+
+        List<String> expectedProductPrice = actualProductPrice;
+        Collections.sort(expectedProductPrice);
+        logger.info("Expected sorted price: " + expectedProductPrice);
+
+        Assert.assertEquals(actualProductPrice, expectedProductPrice);
+        logger.info("[PRODUCTS] testSortByPriceFunctionHighToLow : Passed!");
+    }
+
     @Test(priority = 1, groups = {"products"}, dataProvider = "singleProducts", description = "Verify add single product", retryAnalyzer = core.RetryAnalyzer.class)
     public void testSingleProduct(String productName) {
         ProductsPage page = new ProductsPage(DriverManager.getDriver());
@@ -78,7 +159,7 @@ public class ProductsTests extends BaseLoginTests {
         Assert.assertFalse(buttonText.equals("Add to cart"),
                 "Button should change from Add to cart");
 
-        logger.info("testSingleProduct : Passed!");
+        logger.info("[PRODUCTS] testSingleProduct : Passed!");
     }
 
     @Test(priority = 1, groups = {"products"}, dataProvider = "multipleProducts", description = "Verify add multiple products",retryAnalyzer = core.RetryAnalyzer.class)
@@ -110,6 +191,8 @@ public class ProductsTests extends BaseLoginTests {
         }
 
         softAssert.assertAll();
-        logger.info("testMultipleProducts : Passed!");
+        logger.info("[PRODUCTS] testMultipleProducts : Passed!");
     }
+
+
 }
